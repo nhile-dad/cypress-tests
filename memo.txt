@@ -1,0 +1,11 @@
+# Memo Cypress & Server Project
+
+## 1. Chạy server & test
+
+- Chạy server thủ công:
+  ```bash
+  node server.js
+
+
+## Mở UI Cypress
+npx cypress open

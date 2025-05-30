@@ -5,7 +5,7 @@ Cypress.Commands.add('clickElement', (selector, force = false) => {
 
 // Nhập text vào input
 Cypress.Commands.add('typeText', (selector, text) => {
-    cy.get(selector).clear().type(text);
+    cy.get(selector).should('be.visible').clear().type(text);
 });
 
 // Chọn giá trị từ dropdown <select>

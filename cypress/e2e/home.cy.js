@@ -1,4 +1,5 @@
 
+import LoginPage from '../pageObjects/loginPage'
 describe('Home Page Test Suite', () => {
 
   beforeEach(() => {
@@ -9,9 +10,9 @@ describe('Home Page Test Suite', () => {
   })
 
   it('Click vào nút "Admin"', () => {
-    cy.typeText('[name="username"]','admin')
-    cy.typeText('[name="password"]','Admin!@345678')
-    cy.clickElement('.oxd-button') // Custom command
+    cy.typeText(LoginPage.username,'admin')
+    cy.typeText(LoginPage.password,'Admin!@345678')
+    cy.clickElement(LoginPage.submit) 
     cy.url().should('include', '/viewEmployeeList')
   })
 
