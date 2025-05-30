@@ -10,9 +10,9 @@ describe('Home Page Test Suite', () => {
   })
 
   it('Click vào nút "Admin"', () => {
-    cy.typeText(LoginPage.username,'admin')
-    cy.typeText(LoginPage.password,'Admin!@345678')
-    cy.clickElement(LoginPage.submit) 
+    cy.typeText(LoginPage.elements.username,'admin')
+    cy.typeText(LoginPage.elements.password,'Admin!@345678')
+    cy.clickElement(LoginPage.elements.submit) 
     cy.url().should('include', '/viewEmployeeList')
   })
 
