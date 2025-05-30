@@ -1,18 +1,43 @@
 // Helper để xử lý element theo type
+require('cypress-xpath');
 function resolveElement(element) {
-    if (element.type === 'css') {
-      return cy.get(element.value);
-    } else if (element.type === 'text') {
-      return cy.contains(element.value);
-    } else {
-      throw new Error(`Unsupported element type: ${element.type}`);
+    switch (element.type) {
+      case 'css':
+        return cy.get(element.value);
+  
+      case 'text':
+        return cy.contains(element.value);
+  
+      case 'id':
+        return cy.get(`#${element.value}`);
+  
+      case 'dataTestId':
+        return cy.get(`[data-testid="${element.value}"]`);
+  
+      case 'xpath':
+        // Cần cài plugin: @cypress/xpath
+        return cy.xpath(element.value);
+  
+      default:
+        throw new Error(`Unsupported element type: ${element.type}`);
     }
-  }
+  }  
 
 // Click vào một phần tử
 Cypress.Commands.add('clickElement', (element, force = false) => {
     resolveElement(element).click({ force });
 });
+
+//Click vào một phần tử đã xóa target
+Cypress.Commands.add('clickWithoutTarget', (element, force = false) => {
+    resolveElement(element)
+      .should('be.visible')
+      .invoke('removeAttr','target')
+      .then(($el) => {
+        cy.wrap($el).click({ force });
+      });
+  });
+  
 
 // Nhập text vào input
 Cypress.Commands.add('typeText', (element, text) => {
@@ -39,6 +64,11 @@ Cypress.Commands.add('selectRadio', (element) => {
    resolveElement(element).check();
 });
 
+
+// Kiểm tra path URL
+Cypress.Commands.add('shouldHaveUrlPart', (expectedPath) => {
+    cy.url().should('include', expectedPath);
+  });
 
 // Kiểm tra text hiển thị đúng
 Cypress.Commands.add('verifyText', (element, expectedText) => {

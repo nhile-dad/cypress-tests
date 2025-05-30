@@ -9,3 +9,41 @@
 
 ## Mở UI Cypress
 npx cypress open
+
+
+// === CYPRESS COMMANDS (Chainable) ===
+// Tự động chờ, có thể chain tiếp .click(), .type(), .should()...
+
+cy.get(selector)             // Lấy element bằng CSS selector
+cy.contains(text)            // Lấy element chứa text
+cy.find(selector)            // Tìm phần tử con
+cy.click()                   // Click element
+cy.type('text')              // Gõ text
+cy.select('value')           // Chọn option
+cy.check() / .uncheck()      // Tick/untick checkbox
+cy.should('be.visible')      // Kiểm tra hiển thị
+cy.url().should('include', '/path') // Kiểm tra URL
+cy.visit('/page')            // Mở trang
+cy.reload()                  // Refresh trang
+cy.wait(ms)                  // Chờ cố định
+cy.wrap(obj)                 // Gói jQuery hoặc JS object để dùng lại lệnh Cypress
+
+// === JQUERY METHODS (Không chain được trực tiếp) ===
+// Phải gói bằng .then() hoặc cy.wrap() nếu muốn tiếp tục chain
+
+cy.get(selector).invoke('text')       // Lấy nội dung văn bản
+cy.get(selector).invoke('val')        // Lấy value input
+cy.get(selector).invoke('attr', 'href') // Lấy thuộc tính
+cy.get(selector).invoke('removeAttr', 'target') // Xóa target
+cy.get(selector).then(($el) => {
+  const rawText = $el.text();         // Dùng .text() trong jQuery
+  cy.wrap($el).click();               // Dùng lại với Cypress
+});
+
+
+💡 Tip nâng cao:
+Luôn dùng .then() sau .invoke() nếu cần click/type tiếp.
+
+Tránh mix Cypress + jQuery mà không wrap → dễ gây lỗi.
+
+Nếu cần chậm lại sau .invoke() → .then($el => cy.wrap($el).wait(200).click())
