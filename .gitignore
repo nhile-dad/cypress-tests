@@ -1,0 +1,12 @@
+# Bỏ qua thư mục node_modules (chứa thư viện bên ngoài)
+node_modules/
+
+# Bỏ qua video test (nặng, không cần)
+cypress/videos/
+
+# Bỏ qua ảnh chụp màn hình test fail
+cypress/screenshots/
+
+# Bỏ qua file môi trường nếu có
+.env
+
