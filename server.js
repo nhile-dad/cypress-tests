@@ -8,12 +8,12 @@ app.get('/', (req, res) => {
   res.redirect('http://localhost/web/index.php/pim/viewEmployeeList');
 });
 
-// Có thể mở rộng để test các trang khác (VD: login, dashboard)
+// Có thể mở rộng để test các trang khác (VD: login, dashboard) 123
 app.get('/login', (req, res) => {
   res.redirect('http://localhost/web/index.php/auth/login');
 });
 
-// Khởi động server
+// Khởi động server 123
 app.listen(PORT, () => {
   console.log(`Redirect server is running at http://localhost:${PORT}`);
 });
