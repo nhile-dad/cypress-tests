@@ -47,3 +47,10 @@ Luôn dùng .then() sau .invoke() nếu cần click/type tiếp.
 Tránh mix Cypress + jQuery mà không wrap → dễ gây lỗi.
 
 Nếu cần chậm lại sau .invoke() → .then($el => cy.wrap($el).wait(200).click())
+
+
+// post localhost trên máy nhà là 91
+// post localhost trên máy cty là 3000
+
+// máy nhà: username automationfc, pass T3st1234!789
+// máy cty: usename admin, pass Admin!@345678

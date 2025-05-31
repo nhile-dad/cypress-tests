@@ -4,7 +4,7 @@ describe('Home Page Test Suite', () => {
 
   beforeEach(() => {
     // Bước khởi tạo chung trước mỗi test
-    cy.visit('http://localhost:3000')       // Mở trang chính
+    cy.visit('http://localhost:91')       // Mở trang chính
   })
 
   it('Login mà không nhập username và password', () => {
@@ -22,11 +22,11 @@ describe('Home Page Test Suite', () => {
     cy.shouldHaveUrlPart('/login')
   })
 
-  it('Login thành công', () => {
-    cy.typeText(LoginPage.elements.username,'admin')
-    cy.typeText(LoginPage.elements.password,'Admin!@345678')
+  it.only('Login thành công', () => {
+    cy.typeText(LoginPage.elements.username,'automationfc')
+    cy.typeText(LoginPage.elements.password,'T3st1234!789')
     cy.clickElement(LoginPage.elements.submit) 
-    cy.shouldHaveUrlPart('/viewEmployeeList')
+    cy.shouldHaveUrlPart('/dashboard')
   })
 
   it('Kiểm tra link Quên mật khẩu có hiển thị', () => {
@@ -34,7 +34,7 @@ describe('Home Page Test Suite', () => {
     cy.shouldHaveUrlPart('/requestPasswordResetCode')
   });
 
-  it.only('Kiểm tra link OrangeHRM có hiển thị', () => {
+  it('Kiểm tra link OrangeHRM có hiển thị', () => {
     cy.clickWithoutTarget(LoginPage.elements.orangeHRMLink);
     cy.shouldHaveUrlPart('https://www.orangehrm.com/')
   });
