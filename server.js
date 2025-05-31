@@ -13,7 +13,7 @@ app.get('/login', (req, res) => {
   res.redirect('http://localhost/web/index.php/auth/login');
 });
 
-// Khởi động server 123
+// Khởi động server
 app.listen(PORT, () => {
   console.log(`Redirect server is running at http://localhost:${PORT}`);
 });

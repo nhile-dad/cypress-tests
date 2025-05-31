@@ -1,6 +1,7 @@
 // Helper để xử lý element theo type
 require('cypress-xpath');
-function resolveElement(element) {
+import { sidebarElements } from '../interface/sidebarElements';
+export function resolveElement(element) {
     switch (element.type) {
       case 'css':
         return cy.get(element.value);
@@ -117,4 +118,23 @@ Cypress.Commands.add('hoverElement', (element) => {
 Cypress.Commands.add('dragAndDrop', (sourceSelector, targetSelector) => {
     cy.get(sourceSelector).trigger('mousedown', { which: 1 });
     cy.get(targetSelector).trigger('mousemove').trigger('mouseup', { force: true });
+});
+
+
+// Check Sidebar
+        // click item trên sidebar
+Cypress.Commands.add('clickSidebarItem', (item) => {
+  resolveElement(item).click();
+});
+        // kiểm tra sidebar đang được visible
+Cypress.Commands.add('assertSidebarVisible', () => {
+  resolveElement(sidebarPage.elements.sidebar).should('be.visible');
+});
+        // khi item như setting trên sidebar được chọn thì kiểm tra trạng thái active 
+Cypress.Commands.add('assertSidebarItemActive', (item) => {
+  resolveElement(sidebarPage.elements.activeItem).should('contain.text', item.value);
+});
+        // nếu có button toggle để đóng mở sidebar thì dùng hàm này
+Cypress.Commands.add('toggleSidebar', () => {
+  resolveElement(sidebarPage.elements.toggle).click();
 });
