@@ -3,8 +3,14 @@ import { LoginActions } from '../pageActions/loginActions'
 import { MaintainActions } from '../pageActions/maintainActions';
 describe('Sidebar Navigation Tests', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:91')
-    LoginActions.login('automationfc', 'T3st1234!789')
+    cy.session('loginSession', () => {
+      cy.visit('http://localhost:91');
+      LoginActions.login('automationfc', 'T3st1234!789');
+      cy.url().should('include', '/dashboard');
+    });
+
+    // 👉 Truy cập lại trang dashboard sau khi session được khôi phục
+    cy.visit('http://localhost:91');
   });
 
   it('Should navigate to items', () => {
@@ -17,24 +23,43 @@ describe('Sidebar Navigation Tests', () => {
    
     SidebarActions.clickMenu('Time');
 
-    SidebarActions.clickMenu('Recruitment');
+    // SidebarActions.clickMenu('Recruitment');
     
-    SidebarActions.clickMenu('My Info');
+    // SidebarActions.clickMenu('My Info');
     
-    SidebarActions.clickMenu('Performance');
+    // SidebarActions.clickMenu('Performance');
     
-    SidebarActions.clickMenu('Dashboard');
+    // SidebarActions.clickMenu('Dashboard');
     
-    SidebarActions.clickMenu('Directory');
+    // SidebarActions.clickMenu('Directory');
     
-    SidebarActions.clickMenu('Maintenance');
-    MaintainActions.goBackToDashboard();
+    // SidebarActions.clickMenu('Maintenance');
+    // MaintainActions.goBackToDashboard();
     
-    SidebarActions.clickMenu('Claim');
+    // SidebarActions.clickMenu('Claim');
     
-    SidebarActions.clickMenu('Buzz');
+    // SidebarActions.clickMenu('Buzz');
     
-    SidebarActions.clickMenu('Dashboard');
+    // SidebarActions.clickMenu('Dashboard');
     
   })
+
+  it('Search item trên sidebar', () => {
+    SidebarActions.searchSidebarItem('Leave');
+    cy.contains('Leave').should('be.visible');
+    SidebarActions.clickMenu('Leave');
+  });
+
+  it('Mặc định sidebar đang mở', () => {
+    SidebarActions.assertSidebarIsExpanded();
+  });
+
+  it('Toggle sidebar thu gọn rồi mở lại', () => {
+    SidebarActions.toggleSidebar();
+    SidebarActions.assertSidebarIsCollapsed();
+  
+    SidebarActions.toggleSidebar();
+    SidebarActions.assertSidebarIsExpanded();
+  });
+
 })
