@@ -1,36 +1,45 @@
 import { loginElements } from '../interface/loginElements';
-import { resolveElement } from '../support/commands';
+
 export const LoginActions = {
     typeUsername: (text) => {
-        resolveElement(loginElements.username).clear().type(text);
+        cy.typeText(loginElements.username, text);
     },
+
     typePassword: (text) => {
-        resolveElement(loginElements.password).clear().type(text);
+        cy.typeText(loginElements.password, text);
     },
+
     clickSubmit: () => {
-        resolveElement(loginElements.submit).click();
+        cy.clickElement(loginElements.submit);
     },
+
     login: (username, password) => {
         LoginActions.typeUsername(username);
         LoginActions.typePassword(password);
         LoginActions.clickSubmit();
     },
+
     assertLoginError: (expectedMessage) => {
-        resolveElement(loginElements.loginError).should('contain.text', expectedMessage);
+        cy.verifyText(loginElements.loginError, expectedMessage);
     },
+
     assertUsernameRequired: (message) => {
-        resolveElement(loginElements.usernameMessage).should('contain.text', message);
+        cy.verifyText(loginElements.usernameMessage, message);
     },
+
     assertPasswordRequired: (message) => {
-        resolveElement(loginElements.passwordMessage).should('contain.text', message);
+        cy.verifyText(loginElements.passwordMessage, message);
     },
+
     shouldHaveUrlPart: (urlPart) => {
         cy.shouldHaveUrlPart(urlPart);
     },
+
     clickForgotPassword: () => {
-        resolveElement(loginElements.forgotPassword).click();
+        cy.clickElement(loginElements.forgotPassword);
     },
-    clickOrangeHRMLink:()=>{
+
+    clickOrangeHRMLink: () => {
         cy.clickWithoutTarget(loginElements.orangeHRMLink);
     }
 };

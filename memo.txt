@@ -4,7 +4,7 @@
 
 - Chạy server thủ công:
   ```bash
-  node server.js
+node server.js
 
 
 ## Mở UI Cypress

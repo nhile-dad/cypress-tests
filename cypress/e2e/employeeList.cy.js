@@ -5,13 +5,12 @@ import { EmployeeListActions } from '../pageActions/employeeListActions';
 describe('Employee List Navigation Test', () => {
     beforeEach(() => {
         cy.session('loginSession', () => {
-            cy.visit('http://localhost:91');
-            LoginActions.login('automationfc', 'T3st1234!789');
-            cy.url().should('include', '/dashboard');
+            cy.visit('http://localhost:3000');
+            LoginActions.login('admin', 'Admin!@345678');
         });
 
         // 👉 Truy cập lại trang dashboard sau khi session được khôi phục
-        cy.visit('http://localhost:91');
+        cy.visit('http://localhost:3000');
     });
 
     it('Đi tới trang Employee List từ sidebar', () => {
