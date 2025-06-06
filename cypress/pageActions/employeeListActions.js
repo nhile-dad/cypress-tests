@@ -1,31 +1,37 @@
 import { employeeListElements } from '../interface/employeeListElements';
-
+require('cypress-xpath');
 export const EmployeeListActions = {
-  verifyPageName(expectedMessage) {
-    cy.verifyText(employeeListElements.header, expectedMessage);
+  fillSearchField: (field, value) => {
+    const locator = employeeListElements.search[field];
+    if (!locator) throw new Error(`No locator found for field: ${field}`);
+
+    if (locator.type === 'xpathDropdown') {
+      // Click mở dropdown
+      cy.xpath(locator.input).click({ force: true });
+
+      // Chọn option
+      cy.xpath(locator.option(value)).click({ force: true });
+    } else if (locator.type === 'xpath') {
+      if (value === '') {
+        cy.xpath(locator.value).clear();
+      } else {
+        cy.xpath(locator.value).clear().type(value);
+      }
+    }
   },
-  enterEmployeeName: (name) => {
-    cy.typeText(employeeListElements.employeeName, name);
+
+  clickSearchButton: () => {
+    cy.get(employeeListElements.search.searchButton.value).click();
   },
-  enterEmployeeID: (id) => {
-    cy.typeText(employeeListElements.employeeID, id);
+
+  performEmployeeSearch: (searchCriteria) => {
+    cy.performSearch(EmployeeListActions, searchCriteria);
   },
-  selectEmploymentStatus: (status) => {
-    cy.selectDropdown(employeeListElements.employmentStatus, status);
+
+  verifyEmployeeResultYes: (expectedValues) => {
+    cy.assertRowContains(employeeListElements, expectedValues);
   },
-  selectJobTitle: (title) => {
-    cy.selectDropdown(employeeListElements.jobTitle, title);
+  verifyEmployeeResultNo: (expectedValues) => {
+    cy.assertRowNotContains(employeeListElements, expectedValues);
   },
-  clickSearch: () => {
-    cy.clickElement(employeeListElements.searchButton);
-  },
-  clickReset: () => {
-    cy.clickElement(employeeListElements.resetButton);
-  },
-  assertSearchResultExists: () => {
-    cy.shouldBeVisible(employeeListElements.resultTable);
-  },
-  assertNoResults: () => {
-    cy.assertElementContains(employeeListElements.resultTable, 'No Records Found');
-  }
 }

@@ -1,6 +1,7 @@
 // Helper để xử lý element theo type
+import { EmployeeListActions } from '../pageActions/employeeListActions';
+import { employeeListElements } from '../interface/employeeListElements';
 require('cypress-xpath');
-import { sidebarElements } from '../interface/sidebarElements';
 export function resolveElement(element) {
   switch (element.type) {
     case 'css':
@@ -148,3 +149,69 @@ Cypress.Commands.add('assertSidebarItemActive', (item) => {
 Cypress.Commands.add('toggleSidebar', () => {
   resolveElement(sidebarPage.elements.toggle).click();
 });
+
+Cypress.Commands.add('performSearch', (actions, searchCriteria) => {
+  Object.entries(searchCriteria).forEach(([field, value]) => {
+    actions.fillSearchField(field, value);
+  });
+  actions.clickSearchButton();
+});
+
+Cypress.Commands.add('assertRowContains', (elements, searchValue) => {
+  cy.get(elements.results.rowSelector).should('exist');
+
+  let matchCount = 0;
+  let found = false;
+
+  // Chuẩn hóa searchValue thành mảng các giá trị string để check
+  const searchValues = typeof searchValue === 'string' ? [searchValue] : Object.values(searchValue);
+
+  cy.get(elements.results.rowSelector).each(($row) => {
+    const rowText = $row.text();
+
+    // Nếu tất cả giá trị trong searchValues đều xuất hiện trong rowText => match
+    const isMatch = searchValues.every(val => val && rowText.includes(val));
+
+    if (isMatch) {
+      found = true;
+      matchCount++;
+      cy.wrap($row).should('exist');
+    }
+  }).then(() => {
+    cy.log(`✅ Có record chứa giá trị: "${JSON.stringify(searchValue)}"? ${found}`);
+    expect(found, `Có ít nhất 1 record chứa "${JSON.stringify(searchValue)}"`).to.be.true;
+    cy.log(`✅ Số dòng phù hợp với kết quả mong đợi: ${matchCount}`);
+    console.log(`✅ Số dòng phù hợp với kết quả mong đợi: ${matchCount}`);
+  });
+});
+
+Cypress.Commands.add('assertRowNotContains', (elements, searchValue) => {
+  cy.get(elements.results.rowSelector).should('exist');
+
+  let found = false;
+
+  // Chuẩn hóa searchValue thành mảng các giá trị string để check
+  const searchValues = typeof searchValue === 'string'
+    ? [searchValue]
+    : Object.values(searchValue).map(val => String(val)); // đảm bảo là string
+
+  cy.get(elements.results.rowSelector).each(($row) => {
+    const rowText = $row.text();
+
+    // Nếu tất cả giá trị đều có trong dòng => fail
+    const isMatch = searchValues.every(val => val && rowText.includes(val));
+
+    if (isMatch) {
+      found = true;
+    }
+  }).then(() => {
+    cy.log(`✅ Có record chứa tất cả giá trị: "${JSON.stringify(searchValue)}"? ${found}`);
+    expect(found, `Không có record nào chứa toàn bộ giá trị "${JSON.stringify(searchValue)}"`).to.be.false;
+  });
+});
+
+
+
+
+
+

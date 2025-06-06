@@ -1,11 +1,18 @@
 export const employeeListElements = {
-  header: { type: 'css', value: "div.oxd-table-filter-header h5" },
-  employeeName: { type: 'xpath', value: "//label[text()='Employee Name']/parent::div/following-sibling::div//input" },
-  employeeID: { type: 'css', value: '[name="empId"]' },
-  employmentStatus: { type: 'css', value: '[name="empStatus"]' },
-  jobTitle: { type: 'css', value: '[name="jobTitle"]' },
-  searchButton: { type: 'css', value: 'button[type="submit"]' },
-  resetButton: { type: 'css', value: 'button[type="reset"]' },
-  resultTable: { type: 'css', value: '.oxd-table' },
-  noResultMessage: { type: 'text', value: 'No Records Found' }
+  search: {
+    employeeName: { type: 'xpath', value: "//label[text()='Employee Name']/parent::div/following-sibling::div//input" },
+    employeeId: { type: 'xpath', value: "//label[text()='Employee Id']/parent::div/following-sibling::div//input" },
+    jobTitle: {
+      type: 'xpathDropdown',
+      input: "//label[text()='Job Title']/parent::div/following-sibling::div//div[contains(@class, 'oxd-select-text-input')]",
+      option: (value) => `//div[@role='listbox']//span[text()='${value}']`
+    },
+    employmentStatus: { type: 'css', value: 'select[name="employmentStatus"]' },
+    resetButton: { type: 'css', value: 'button[type="reset"]' },
+    searchButton: { type: 'css', value: 'button[type="submit"]' }
+  },
+  results: {
+    rowSelector: '.oxd-table-card', // không dùng tr/td
+    cellSelector: '.oxd-table-cell' // selector chung của các ô
+  }
 }
